@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Desafio</string>
+    <string name="openbooks_button">Livros</string>
+    <string name="open_houses_button">Casas</string>
+    <string name="menu_books_label">Livros</string>
+    <string name="menu_characters_label">Personagens</string>
 </resources>
