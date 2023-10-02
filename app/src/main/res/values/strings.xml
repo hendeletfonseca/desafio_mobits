@@ -4,4 +4,12 @@
     <string name="open_houses_button">Casas</string>
     <string name="menu_books_label">Livros</string>
     <string name="menu_characters_label">Personagens</string>
+    <string name="isbn">Isbn:</string>
+    <string name="pages">Páginas:</string>
+    <string name="release">Lançamento:</string>
+    <string name="pov">Personagens POV</string>
+    <string name="all_characters">Todos os personagens</string>
+    <string name="isbn_placeholder">ISBN: %1$s</string>
+    <string name="pages_placeholder">Páginas: %1$s</string>
+    <string name="release_date_placeholder">Lançamento: %1$s</string>
 </resources>
