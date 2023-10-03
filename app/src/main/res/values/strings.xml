@@ -12,4 +12,9 @@
     <string name="isbn_placeholder">ISBN: %1$s</string>
     <string name="pages_placeholder">Páginas: %1$s</string>
     <string name="release_date_placeholder">Lançamento: %1$s</string>
+    <string name="overlord">Senhor da Casa</string>
+    <string name="heir">Herdeiro da casa</string>
+    <string name="name_not_found">Nome desconhecido!</string>
+    <string name="birth_not_found">Data de nascimento não encontrada</string>
+    <string name="titles_not_found">Não possui títulos!</string>
 </resources>

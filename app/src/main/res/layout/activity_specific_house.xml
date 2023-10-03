@@ -4,59 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.SpecificBookActivity">
+    tools:context=".activity.SpecificHouseActivity">
+
+    <include layout="@layout/detail_content" />
 
     <TextView
-        android:id="@+id/tv_book_title"
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_book_isbn"
+        android:id="@+id/tv_phrase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/isbn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_book_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
     <TextView
-        android:id="@+id/tv_book_pages"
+        android:id="@+id/tv_region"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/pages"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_book_isbn" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_phrase" />
 
     <TextView
-        android:id="@+id/tv_book_release_date"
+        android:id="@+id/tv_titles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/release"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_book_pages" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_region" />
 
     <Button
         android:id="@+id/btn_overlord"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/pov"
+        android:text="@string/overlord"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="25dp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_book_release_date" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_titles" />
 
     <Button
-        android:id="@+id/btn_all_characters"
+        android:id="@+id/btn_heir"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/all_characters"
+        android:text="@string/heir"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_overlord" />
-
-    <include layout="@layout/detail_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

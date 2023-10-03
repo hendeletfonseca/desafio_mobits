@@ -48,7 +48,7 @@ public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.Ch
         final AdapterCharacters mAdapter;
         public CharacterViewHolder(@NonNull View itemView, AdapterCharacters adapter) {
             super(itemView);
-            characterItemView = itemView.findViewById(R.id.tv_name);
+            characterItemView = itemView.findViewById(R.id.adapter_tv_name);
             this.mAdapter = adapter;
             itemView.setOnClickListener(this);
         }

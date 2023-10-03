@@ -34,8 +34,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         if (itemId == R.id.action_bar_books) {
             onClickBooks();
-        } else if (itemId == R.id.action_bar_characters) {
-            onClickCharacters();
+        } else if (itemId == R.id.action_bar_houses) {
+            onClickHouses();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -44,8 +44,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BooksActivity.class);
         startActivity(intent);
     }
-    public void onClickCharacters() {
-        Intent intent = new Intent(this, CharactersActivity.class);
+    public void onClickHouses() {
+        Intent intent = new Intent(this, HousesActivity.class);
         startActivity(intent);
     }
 }

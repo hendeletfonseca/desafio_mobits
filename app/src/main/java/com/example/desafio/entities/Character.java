@@ -51,6 +51,15 @@ public class Character implements Serializable {
         return titles;
     }
 
+    public String getStringTitles() {
+        StringBuilder sb = new StringBuilder();
+        for (String title: titles) {
+            sb.append(title).append(", ");
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        return sb.toString();
+    }
+
     public List<String> getAliases() {
         return aliases;
     }

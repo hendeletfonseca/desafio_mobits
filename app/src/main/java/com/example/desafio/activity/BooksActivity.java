@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.desafio.adapters.AdapterBooks;
 import com.example.desafio.R;
 import com.example.desafio.entities.Book;
+import com.example.desafio.network.ApiModule;
 import com.example.desafio.network.IceAndFireService;
 
 import java.util.LinkedList;
@@ -35,10 +36,10 @@ public class BooksActivity extends BaseActivity {
 
 
         loadBooks(1, 14);
+        //ApiModule.getBooks(1, 14, adapter, books);
 
         recyclerView = findViewById(R.id.recyclerview);
         adapter = new AdapterBooks(this, books);
-        //adapter = new Adapter<Book>(this, books, R.layout.book_item_adapter);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));

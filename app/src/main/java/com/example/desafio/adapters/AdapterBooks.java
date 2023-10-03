@@ -47,7 +47,7 @@ public class AdapterBooks extends RecyclerView.Adapter<AdapterBooks.BookViewHold
         final AdapterBooks mAdapter;
         public BookViewHolder(@NonNull View itemView, AdapterBooks adapter) {
             super(itemView);
-            bookItemView = itemView.findViewById(R.id.tv_name);
+            bookItemView = itemView.findViewById(R.id.adapter_tv_name);
             this.mAdapter = adapter;
             itemView.setOnClickListener(this);
         }

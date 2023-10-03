@@ -1,7 +1,5 @@
 package com.example.desafio.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +9,8 @@ import android.widget.TextView;
 
 import com.example.desafio.R;
 import com.example.desafio.entities.Book;
-import com.example.desafio.entities.Character;
-import com.example.desafio.entities.CharactersResponse;
+import com.example.desafio.util.UrlUtils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +19,7 @@ public class SpecificBookActivity extends BaseActivity {
     private Book book;
     private TextView tv_title, tv_isbn, tv_pages, tv_release_date;
     private Button bnt_pov, btn_characters;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +44,21 @@ public class SpecificBookActivity extends BaseActivity {
         tv_release_date = findViewById(R.id.tv_book_release_date);
         tv_release_date.setText(getString(R.string.release_date_placeholder, book.getReleased()));
 
-        bnt_pov = findViewById(R.id.btn_characters_pov);
+        bnt_pov = findViewById(R.id.btn_overlord);
         bnt_pov.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<String> urlsPovCharacters = book.getPovCharacters();
-                // TODO: Open a new activity with the pov characters
+                Log.d("SPECIFIC_BOOK_ACTIVITY", "onClick: " + book.getCharacters().size());
+                List<String> characters_urls = book.getCharacters();
+                int[] ids = new int[characters_urls.size()];
+                for (int i = 0; i < characters_urls.size(); i++) {
+                    ids[i] = UrlUtils.getIdFromUrl(characters_urls.get(i));
+                }
+                Bundle bundle = new Bundle();
+                bundle.putIntArray("IDS", ids);
+                Intent intent = new Intent(SpecificBookActivity.this, CharactersActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
@@ -58,8 +66,19 @@ public class SpecificBookActivity extends BaseActivity {
         btn_characters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<String> urlsCharacters = book.getCharacters();
-                // TODO: Open a new activity with the characters
+                Intent intent = new Intent(SpecificBookActivity.this, CharactersActivity.class);
+                startActivity(intent);
+            }
+        });
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("url", "https://www.google.com/search?tbm=isch&q=" + book.getName());
+                Intent intent = new Intent(SpecificBookActivity.this, WebViewActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }

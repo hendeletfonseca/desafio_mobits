@@ -1,5 +1,6 @@
 package com.example.desafio.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,6 +13,7 @@ import com.example.desafio.network.ApiModule;
 import com.example.desafio.network.IceAndFireService;
 import com.example.desafio.entities.Character;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,10 +33,19 @@ public class CharactersActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_characters);
         Objects.requireNonNull(super.getSupportActionBar()).setTitle("Characters");
-
-        int firstEmptyPage = 44;
-        for (int i = 1; i < firstEmptyPage; i++) {
-            loadCharacters(i, 50);
+        Log.d("CHARACTERS_ACTIVITY", "onCreate: " + characters.size());
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            int[] ids = bundle.getIntArray("IDS");
+            for (int id: ids) {
+                loadCharacter(id);
+            }
+            Log.d("CHARACTERS_ACTIVITY", "onCreate: " + Arrays.toString(ids));
+        } else {
+            int firstEmptyPage = 44;
+            for (int i = 1; i < firstEmptyPage; i++) {
+                loadCharacters(i, 50);
+            }
         }
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
@@ -62,8 +73,8 @@ public class CharactersActivity extends BaseActivity {
                 }
                 int lastPos = characters.size() - 1;
 
-                for (Character character: charactersResponse) {
-                    if (!character.getName().equals("")){
+                for (Character character : charactersResponse) {
+                    if (!character.getName().equals("")) {
                         characters.add(character);
                         adapter.notifyItemInserted(lastPos++);
                     }
@@ -75,6 +86,28 @@ public class CharactersActivity extends BaseActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<Character>> call, @NonNull Throwable t) {
+                Log.d("CHARACTERS_ACTIVITY", "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    public void loadCharacter(int id) {
+        IceAndFireService service = ApiModule.service();
+        Call<Character> call = service.getCharacter(id);
+        call.enqueue(new Callback<Character>() {
+            @Override
+            public void onResponse(@NonNull Call<Character> call, @NonNull Response<Character> response) {
+                if (!response.isSuccessful()) return;
+
+                Character character = response.body();
+                if (character == null) return;
+
+                characters.add(character);
+                adapter.notifyItemInserted(characters.size() - 1);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Character> call, @NonNull Throwable t) {
                 Log.d("CHARACTERS_ACTIVITY", "onFailure: " + t.getMessage());
             }
         });
