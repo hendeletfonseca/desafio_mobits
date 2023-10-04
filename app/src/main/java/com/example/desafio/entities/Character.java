@@ -23,6 +23,11 @@ public class Character implements Serializable {
     private List<String> tvSeries;
     private List<String> playedBy;
 
+    public Character(String url, String name) {
+        this.url = url;
+        this.name = name;
+    }
+
     public String getUrl() {
         return url;
     }

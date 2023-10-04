@@ -13,6 +13,7 @@ import com.example.desafio.network.ApiModule;
 import com.example.desafio.network.IceAndFireService;
 import com.example.desafio.entities.Character;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -33,25 +34,31 @@ public class CharactersActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_characters);
         Objects.requireNonNull(super.getSupportActionBar()).setTitle("Characters");
-        Log.d("CHARACTERS_ACTIVITY", "onCreate: " + characters.size());
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            int[] ids = bundle.getIntArray("IDS");
-            for (int id: ids) {
-                loadCharacter(id);
-            }
-            Log.d("CHARACTERS_ACTIVITY", "onCreate: " + Arrays.toString(ids));
-        } else {
-            int firstEmptyPage = 44;
-            for (int i = 1; i < firstEmptyPage; i++) {
-                loadCharacters(i, 50);
-            }
-        }
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         adapter = new AdapterCharacters(this, characters);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) {
+            int firstEmptyPage = 44;
+            for (int i = 1; i <= firstEmptyPage; i++) {
+                loadCharacters(i, 50);
+            }
+        }
+        if (bundle != null) {
+            ArrayList<String> urls = bundle.getStringArrayList("URLS");
+            ArrayList<String> names = bundle.getStringArrayList("NAMES");
+            if (urls == null || names == null) return;
+            for (int i = 0; i < urls.size(); i++) {
+                characters.add(new Character(urls.get(i), names.get(i)));
+                adapter.notifyItemInserted(i);
+            }
+            characters.sort(Comparator.comparing(Character::getName));
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
     public void loadCharacters(int page, int pageSize) {
@@ -63,12 +70,12 @@ public class CharactersActivity extends BaseActivity {
             @Override
             public void onResponse(@NonNull Call<List<Character>> call, @NonNull Response<List<Character>> response) {
                 if (!response.isSuccessful()) {
-                    Log.d("CHARACTERS_ACTIVITY", "onResponse: " + response.code());
                     return;
                 }
                 List<Character> charactersResponse = response.body();
                 if (charactersResponse == null || charactersResponse.isEmpty()) {
-                    Log.d("CHARACTERS_ACTIVITY", "onResponse: charactersResponse is null");
+                    characters.sort(Comparator.comparing(Character::getName));
+                    adapter.notifyDataSetChanged();
                     return;
                 }
                 int lastPos = characters.size() - 1;
@@ -76,17 +83,14 @@ public class CharactersActivity extends BaseActivity {
                 for (Character character : charactersResponse) {
                     if (!character.getName().equals("")) {
                         characters.add(character);
-                        adapter.notifyItemInserted(lastPos++);
                     }
                 }
 
-                characters.sort(Comparator.comparing(Character::getName));
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemRangeInserted(lastPos, characters.size() - 1);
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Character>> call, @NonNull Throwable t) {
-                Log.d("CHARACTERS_ACTIVITY", "onFailure: " + t.getMessage());
             }
         });
     }
@@ -103,12 +107,12 @@ public class CharactersActivity extends BaseActivity {
                 if (character == null) return;
 
                 characters.add(character);
-                adapter.notifyItemInserted(characters.size() - 1);
+                characters.sort(Comparator.comparing(Character::getName));
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(@NonNull Call<Character> call, @NonNull Throwable t) {
-                Log.d("CHARACTERS_ACTIVITY", "onFailure: " + t.getMessage());
             }
         });
     }

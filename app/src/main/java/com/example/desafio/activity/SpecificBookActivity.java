@@ -1,6 +1,7 @@
 package com.example.desafio.activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,9 +12,16 @@ import com.example.desafio.R;
 import com.example.desafio.entities.Book;
 import com.example.desafio.util.UrlUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class SpecificBookActivity extends BaseActivity {
     private Book book;
@@ -48,16 +56,23 @@ public class SpecificBookActivity extends BaseActivity {
         bnt_pov.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("SPECIFIC_BOOK_ACTIVITY", "onClick: " + book.getCharacters().size());
-                List<String> characters_urls = book.getCharacters();
-                int[] ids = new int[characters_urls.size()];
-                for (int i = 0; i < characters_urls.size(); i++) {
-                    ids[i] = UrlUtils.getIdFromUrl(characters_urls.get(i));
+                ArrayList<String> urls = new ArrayList<>();
+                ArrayList<String> names = new ArrayList<>();
+                Log.d("SPECIFIC_BOOK", "POV SIZE " + book.getPovCharacters().size());
+                for (String pov : book.getPovCharacters()) {
+                    String name = verificarLinkNoJson(pov);
+                    if (name != null) {
+                        urls.add(pov);
+                        names.add(name);
+                    } else {
+                        Log.d("SPECIFIC_BOOK", "Name NULL: " + pov);
+                    }
                 }
-                Bundle bundle = new Bundle();
-                bundle.putIntArray("IDS", ids);
+                Bundle newBundle = new Bundle();
+                newBundle.putStringArrayList("URLS", urls);
+                newBundle.putStringArrayList("NAMES", names);
                 Intent intent = new Intent(SpecificBookActivity.this, CharactersActivity.class);
-                intent.putExtras(bundle);
+                intent.putExtras(newBundle);
                 startActivity(intent);
             }
         });
@@ -83,5 +98,39 @@ public class SpecificBookActivity extends BaseActivity {
         });
     }
 
+    public String verificarLinkNoJson(String link) {
+        Log.d("SPECIFICBOOK" , "verificarLinkNoJson: " + link);
+        try {
+            int resourceId = R.raw.personagens_key_value;
+            Resources resources = getResources();
+            InputStream inputStream = resources.openRawResource(resourceId);
 
+            Scanner scanner = new Scanner(inputStream, "UTF-8");
+            StringBuilder jsonString = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                jsonString.append(scanner.nextLine());
+            }
+            scanner.close();
+
+            JsonParser jsonParser = new JsonParser();
+            JsonElement jsonElement = jsonParser.parse(jsonString.toString());
+
+            if (jsonElement.isJsonObject()) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                if (jsonObject.has(link)) {
+                    String valor = jsonObject.get(link).getAsString();
+                    Log.d("SPECIFIC_BOOK", "SIM - " + valor);
+                    return valor;
+                } else {
+                    Log.d("SPECIFIC_BOOK", "NÃO - " + link);
+                }
+            } else {
+                Log.d("SPECIFIC_BOOK", "O conteúdo do arquivo JSON não é um objeto JSON válido.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

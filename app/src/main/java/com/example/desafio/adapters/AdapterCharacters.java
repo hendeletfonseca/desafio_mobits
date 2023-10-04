@@ -2,9 +2,11 @@ package com.example.desafio.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,8 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.desafio.R;
 import com.example.desafio.activity.SpecificCharacterActivity;
 import com.example.desafio.entities.Character;
+import com.example.desafio.network.ApiModule;
+import com.example.desafio.network.IceAndFireService;
+import com.example.desafio.util.UrlUtils;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.CharacterViewHolder>{
     private final List<Character> charactersList;
@@ -59,9 +68,48 @@ public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.Ch
 
             Character element = charactersList.get(mPosition);
 
-            Intent intent = new Intent(view.getContext(), SpecificCharacterActivity.class);
-            intent.putExtra("CHARACTER", element);
-            view.getContext().startActivity(intent);
+            if (characterFromAPI(element)) {
+                Intent intent = new Intent(view.getContext(), SpecificCharacterActivity.class);
+                intent.putExtra("CHARACTER", element);
+                view.getContext().startActivity(intent);
+            } else {
+                IceAndFireService service = ApiModule.service();
+                Call<Character> call = service.getCharacter(UrlUtils.getIdFromUrl(element.getUrl()));
+                call.enqueue(new Callback<Character>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Character> call, @NonNull Response<Character> response) {
+                        if (!response.isSuccessful()) return;
+
+                        Character character = response.body();
+                        if (character == null) return;
+                        charactersList.set(mPosition, character);
+                        Intent intent = new Intent(view.getContext(), SpecificCharacterActivity.class);
+                        intent.putExtra("CHARACTER", character);
+                        view.getContext().startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Character> call, @NonNull Throwable t) {
+
+                    }
+                });
+            }
+        }
+
+        private boolean characterFromAPI(Character character) {
+            return !(character.getAliases() == null &&
+                    character.getAllegiances() == null &&
+                    character.getBooks() == null &&
+                    character.getBorn() == null &&
+                    character.getCulture() == null &&
+                    character.getDied() == null &&
+                    character.getFather() == null &&
+                    character.getGender() == null &&
+                    character.getMother() == null &&
+                    character.getPlayedBy() == null &&
+                    character.getPovBooks() == null &&
+                    character.getSpouse() == null &&
+                    character.getTitles() == null);
         }
     }
 }

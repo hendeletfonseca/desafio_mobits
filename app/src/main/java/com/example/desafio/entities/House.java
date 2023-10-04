@@ -42,9 +42,25 @@ public class House implements Serializable {
     public String getWords() {
         return words;
     }
+    public String getWordsString() {
+        if (words.equals("") || words.equals("null"))
+            return "Sem frase!";
+        return words;
+    }
 
     public List<String> getTitles() {
         return titles;
+    }
+    public String getTitlesString() {
+        StringBuilder titlesString = new StringBuilder();
+        for (String title : titles) {
+            titlesString.append(title).append(", ");
+        }
+        titlesString.delete(titlesString.length() - 2, titlesString.length());
+        if (titlesString.toString().equals("") || titlesString.toString().equals("null"))
+            return "Sem títulos!";
+
+        return titlesString.toString();
     }
 
     public List<String> getSeats() {
