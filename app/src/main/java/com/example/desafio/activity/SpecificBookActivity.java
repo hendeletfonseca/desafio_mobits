@@ -56,24 +56,7 @@ public class SpecificBookActivity extends BaseActivity {
         bnt_pov.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<String> urls = new ArrayList<>();
-                ArrayList<String> names = new ArrayList<>();
-                Log.d("SPECIFIC_BOOK", "POV SIZE " + book.getPovCharacters().size());
-                for (String pov : book.getPovCharacters()) {
-                    String name = verificarLinkNoJson(pov);
-                    if (name != null) {
-                        urls.add(pov);
-                        names.add(name);
-                    } else {
-                        Log.d("SPECIFIC_BOOK", "Name NULL: " + pov);
-                    }
-                }
-                Bundle newBundle = new Bundle();
-                newBundle.putStringArrayList("URLS", urls);
-                newBundle.putStringArrayList("NAMES", names);
-                Intent intent = new Intent(SpecificBookActivity.this, CharactersActivity.class);
-                intent.putExtras(newBundle);
-                startActivity(intent);
+                openCharacters(book.getPovCharacters());
             }
         });
 
@@ -81,8 +64,7 @@ public class SpecificBookActivity extends BaseActivity {
         btn_characters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SpecificBookActivity.this, CharactersActivity.class);
-                startActivity(intent);
+                openCharacters(book.getCharacters());
             }
         });
         fab = findViewById(R.id.fab);
@@ -99,7 +81,6 @@ public class SpecificBookActivity extends BaseActivity {
     }
 
     public String verificarLinkNoJson(String link) {
-        Log.d("SPECIFICBOOK" , "verificarLinkNoJson: " + link);
         try {
             int resourceId = R.raw.personagens_key_value;
             Resources resources = getResources();
@@ -118,9 +99,7 @@ public class SpecificBookActivity extends BaseActivity {
             if (jsonElement.isJsonObject()) {
                 JsonObject jsonObject = jsonElement.getAsJsonObject();
                 if (jsonObject.has(link)) {
-                    String valor = jsonObject.get(link).getAsString();
-                    Log.d("SPECIFIC_BOOK", "SIM - " + valor);
-                    return valor;
+                    return jsonObject.get(link).getAsString();
                 } else {
                     Log.d("SPECIFIC_BOOK", "NÃO - " + link);
                 }
@@ -133,4 +112,27 @@ public class SpecificBookActivity extends BaseActivity {
         }
         return null;
     }
+
+    public void openCharacters(List<String> characters) {
+        ArrayList<String> urls = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> urlsWithoutName = new ArrayList<>();
+        for (String pov : characters) {
+            String name = verificarLinkNoJson(pov);
+            if (name != null) {
+                urls.add(pov);
+                names.add(name);
+            } else {
+                urlsWithoutName.add(pov);
+            }
+        }
+        Bundle newBundle = new Bundle();
+        newBundle.putStringArrayList("URLS", urls);
+        newBundle.putStringArrayList("NAMES", names);
+        newBundle.putStringArrayList("URLS_WITHOUT_NAME", urlsWithoutName);
+        Intent intent = new Intent(SpecificBookActivity.this, CharactersActivity.class);
+        intent.putExtras(newBundle);
+        startActivity(intent);
+    }
+
 }

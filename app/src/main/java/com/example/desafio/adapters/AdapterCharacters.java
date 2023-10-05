@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.CharacterViewHolder>{
+public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.CharacterViewHolder> {
     private final List<Character> charactersList;
     private final LayoutInflater mInflater;
 
@@ -37,7 +37,10 @@ public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.Ch
     @NonNull
     @Override
     public AdapterCharacters.CharacterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View mItemView = mInflater.inflate(R.layout.character_item_adapter, parent, false);
+        View mItemView;
+        if (viewType == 1)
+            mItemView = mInflater.inflate(R.layout.character_item_adapter, parent, false);
+        else mItemView = mInflater.inflate(R.layout.div_item_adapter, parent, false);
         return new CharacterViewHolder(mItemView, this);
     }
 
@@ -52,9 +55,15 @@ public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.Ch
         return charactersList.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return charactersList.get(position).getUrl().equals("RECYCLER_VIEW_DIV") ? 0 : 1;
+    }
+
     public class CharacterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView characterItemView;
         final AdapterCharacters mAdapter;
+
         public CharacterViewHolder(@NonNull View itemView, AdapterCharacters adapter) {
             super(itemView);
             characterItemView = itemView.findViewById(R.id.adapter_tv_name);
@@ -67,7 +76,9 @@ public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.Ch
             int mPosition = getLayoutPosition();
 
             Character element = charactersList.get(mPosition);
-
+            if (element.getUrl().equals("RECYCLER_VIEW_DIV")) {
+                return;
+            }
             if (characterFromAPI(element)) {
                 Intent intent = new Intent(view.getContext(), SpecificCharacterActivity.class);
                 intent.putExtra("CHARACTER", element);
