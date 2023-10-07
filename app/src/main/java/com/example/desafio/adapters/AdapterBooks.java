@@ -19,6 +19,7 @@ import java.util.List;
 public class AdapterBooks extends RecyclerView.Adapter<AdapterBooks.BookViewHolder> {
     private final List<Book> booksList;
     private final LayoutInflater mInflater;
+
     public AdapterBooks(Context context, List<Book> booksList) {
         mInflater = LayoutInflater.from(context);
         this.booksList = booksList;
@@ -45,6 +46,7 @@ public class AdapterBooks extends RecyclerView.Adapter<AdapterBooks.BookViewHold
     public class BookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView bookItemView;
         final AdapterBooks mAdapter;
+
         public BookViewHolder(@NonNull View itemView, AdapterBooks adapter) {
             super(itemView);
             bookItemView = itemView.findViewById(R.id.adapter_tv_name);

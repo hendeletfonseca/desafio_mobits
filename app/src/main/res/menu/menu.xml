@@ -10,7 +10,7 @@
     <!-- action button for refresh -->
     <item android:title="@string/menu_characters_label"
         android:id="@+id/action_bar_houses"
-        android:icon="@drawable/ic_house"
+        android:icon="@drawable/ic_house_light"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"/>
 </menu>

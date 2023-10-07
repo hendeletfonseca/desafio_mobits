@@ -3,31 +3,28 @@ package com.example.desafio.activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.desafio.R;
 import com.example.desafio.entities.Book;
-import com.example.desafio.util.UrlUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class SpecificBookActivity extends BaseActivity {
     private Book book;
-    private TextView tv_title, tv_isbn, tv_pages, tv_release_date;
-    private Button bnt_pov, btn_characters;
-    private FloatingActionButton fab;
+    private JsonObject jsonObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,23 +33,24 @@ public class SpecificBookActivity extends BaseActivity {
         Objects.requireNonNull(super.getSupportActionBar()).setTitle("Book");
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            this.book = (Book) bundle.getSerializable("BOOK");
-        }
+        if (bundle == null) finish();
+        this.book = (Book) bundle.getSerializable("BOOK");
 
-        tv_title = findViewById(R.id.tv_book_title);
+        TextView tv_title = findViewById(R.id.tv_book_title);
         tv_title.setText(book.getName());
 
-        tv_isbn = findViewById(R.id.tv_book_isbn);
+        TextView tv_isbn = findViewById(R.id.tv_book_isbn);
         tv_isbn.setText(getString(R.string.isbn_placeholder, book.getIsbn()));
 
-        tv_pages = findViewById(R.id.tv_book_pages);
+        TextView tv_pages = findViewById(R.id.tv_book_pages);
         tv_pages.setText(getString(R.string.pages_placeholder, String.valueOf(book.getNumberOfPages())));
 
-        tv_release_date = findViewById(R.id.tv_book_release_date);
+        TextView tv_release_date = findViewById(R.id.tv_book_release_date);
         tv_release_date.setText(getString(R.string.release_date_placeholder, book.getReleased()));
 
-        bnt_pov = findViewById(R.id.btn_overlord);
+        readJson();
+
+        Button bnt_pov = findViewById(R.id.btn_overlord);
         bnt_pov.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,14 +58,14 @@ public class SpecificBookActivity extends BaseActivity {
             }
         });
 
-        btn_characters = findViewById(R.id.btn_all_characters);
+        Button btn_characters = findViewById(R.id.btn_all_characters);
         btn_characters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openCharacters(book.getCharacters());
             }
         });
-        fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +78,37 @@ public class SpecificBookActivity extends BaseActivity {
         });
     }
 
-    public String verificarLinkNoJson(String link) {
+    public final String verificarLinkNoJson(String link) {
+        if (jsonObject.has(link)) return jsonObject.get(link).getAsString();
+        return null;
+    }
+
+    public void openCharacters(List<String> characters) {
+        Map<String, String> map = new HashMap<>();
+        for (String pov : characters) {
+            String name = verificarLinkNoJson(pov);
+            if (name != null) {
+                map.put(pov, name);
+            }
+        }
+        List<Map.Entry<String, String>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+        ArrayList<String> urls = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        for (Map.Entry<String, String> entry : list) {
+            urls.add(entry.getKey());
+            names.add(entry.getValue());
+        }
+
+        Bundle newBundle = new Bundle();
+        newBundle.putStringArrayList("URLS", urls);
+        newBundle.putStringArrayList("NAMES", names);
+        Intent intent = new Intent(SpecificBookActivity.this, CharactersActivity.class);
+        intent.putExtras(newBundle);
+        startActivity(intent);
+    }
+
+    private void readJson() {
         try {
             int resourceId = R.raw.personagens_key_value;
             Resources resources = getResources();
@@ -95,44 +123,11 @@ public class SpecificBookActivity extends BaseActivity {
 
             JsonParser jsonParser = new JsonParser();
             JsonElement jsonElement = jsonParser.parse(jsonString.toString());
-
-            if (jsonElement.isJsonObject()) {
-                JsonObject jsonObject = jsonElement.getAsJsonObject();
-                if (jsonObject.has(link)) {
-                    return jsonObject.get(link).getAsString();
-                } else {
-                    Log.d("SPECIFIC_BOOK", "NÃO - " + link);
-                }
-            } else {
-                Log.d("SPECIFIC_BOOK", "O conteúdo do arquivo JSON não é um objeto JSON válido.");
-            }
+            if (jsonElement.isJsonObject()) jsonObject = jsonElement.getAsJsonObject();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    public void openCharacters(List<String> characters) {
-        ArrayList<String> urls = new ArrayList<>();
-        ArrayList<String> names = new ArrayList<>();
-        ArrayList<String> urlsWithoutName = new ArrayList<>();
-        for (String pov : characters) {
-            String name = verificarLinkNoJson(pov);
-            if (name != null) {
-                urls.add(pov);
-                names.add(name);
-            } else {
-                urlsWithoutName.add(pov);
-            }
-        }
-        Bundle newBundle = new Bundle();
-        newBundle.putStringArrayList("URLS", urls);
-        newBundle.putStringArrayList("NAMES", names);
-        newBundle.putStringArrayList("URLS_WITHOUT_NAME", urlsWithoutName);
-        Intent intent = new Intent(SpecificBookActivity.this, CharactersActivity.class);
-        intent.putExtras(newBundle);
-        startActivity(intent);
     }
 
 }

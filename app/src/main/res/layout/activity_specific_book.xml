@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginHorizontal="25dp"
+    android:layout_marginVertical="25dp"
     android:layout_height="match_parent"
     tools:context=".activity.SpecificBookActivity">
 
@@ -21,8 +23,8 @@
         android:layout_height="wrap_content"
         android:text="@string/isbn"
         android:textSize="25sp"
+        android:layout_marginTop="16dp"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_book_title" />
 
@@ -30,21 +32,21 @@
         android:id="@+id/tv_book_pages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/pages"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_book_isbn" />
 
     <TextView
         android:id="@+id/tv_book_release_date"
         android:layout_width="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
         android:text="@string/release"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_book_pages" />
 
@@ -52,9 +54,9 @@
         android:id="@+id/btn_overlord"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
         android:text="@string/pov"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="35dp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_book_release_date" />

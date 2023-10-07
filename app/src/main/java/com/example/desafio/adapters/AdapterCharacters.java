@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +27,8 @@ import retrofit2.Response;
 public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.CharacterViewHolder> {
     private final List<Character> charactersList;
     private final LayoutInflater mInflater;
+    private static final int TYPE_DIV = 0;
+    private static final int TYPE_ITEM = 1;
 
     public AdapterCharacters(Context context, List<Character> charactersList) {
         this.mInflater = LayoutInflater.from(context);
@@ -38,10 +39,12 @@ public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.Ch
     @Override
     public AdapterCharacters.CharacterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View mItemView;
-        if (viewType == 1)
+        if (viewType == TYPE_ITEM)
             mItemView = mInflater.inflate(R.layout.character_item_adapter, parent, false);
-        else mItemView = mInflater.inflate(R.layout.div_item_adapter, parent, false);
-        return new CharacterViewHolder(mItemView, this);
+        else
+            mItemView = mInflater.inflate(R.layout.div_item_adapter, parent, false);
+
+        return new CharacterViewHolder(mItemView, this, viewType);
     }
 
     @Override
@@ -64,11 +67,11 @@ public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.Ch
         public final TextView characterItemView;
         final AdapterCharacters mAdapter;
 
-        public CharacterViewHolder(@NonNull View itemView, AdapterCharacters adapter) {
+        public CharacterViewHolder(@NonNull View itemView, AdapterCharacters adapter, int type) {
             super(itemView);
             characterItemView = itemView.findViewById(R.id.adapter_tv_name);
             this.mAdapter = adapter;
-            itemView.setOnClickListener(this);
+            if(type == TYPE_ITEM) itemView.setOnClickListener(this);
         }
 
         @Override
@@ -79,48 +82,27 @@ public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.Ch
             if (element.getUrl().equals("RECYCLER_VIEW_DIV")) {
                 return;
             }
-            if (characterFromAPI(element)) {
-                Intent intent = new Intent(view.getContext(), SpecificCharacterActivity.class);
-                intent.putExtra("CHARACTER", element);
-                view.getContext().startActivity(intent);
-            } else {
-                IceAndFireService service = ApiModule.service();
-                Call<Character> call = service.getCharacter(UrlUtils.getIdFromUrl(element.getUrl()));
-                call.enqueue(new Callback<Character>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Character> call, @NonNull Response<Character> response) {
-                        if (!response.isSuccessful()) return;
 
-                        Character character = response.body();
-                        if (character == null) return;
-                        charactersList.set(mPosition, character);
-                        Intent intent = new Intent(view.getContext(), SpecificCharacterActivity.class);
-                        intent.putExtra("CHARACTER", character);
-                        view.getContext().startActivity(intent);
-                    }
+            IceAndFireService service = ApiModule.service();
+            Call<Character> call = service.getCharacter(UrlUtils.getIdFromUrl(element.getUrl()));
+            call.enqueue(new Callback<Character>() {
+                @Override
+                public void onResponse(@NonNull Call<Character> call, @NonNull Response<Character> response) {
+                    if (!response.isSuccessful()) return;
 
-                    @Override
-                    public void onFailure(@NonNull Call<Character> call, @NonNull Throwable t) {
+                    Character character = response.body();
+                    if (character == null) return;
+                    charactersList.set(mPosition, character);
+                    Intent intent = new Intent(view.getContext(), SpecificCharacterActivity.class);
+                    intent.putExtra("CHARACTER", character);
+                    view.getContext().startActivity(intent);
+                }
 
-                    }
-                });
-            }
-        }
-
-        private boolean characterFromAPI(Character character) {
-            return !(character.getAliases() == null &&
-                    character.getAllegiances() == null &&
-                    character.getBooks() == null &&
-                    character.getBorn() == null &&
-                    character.getCulture() == null &&
-                    character.getDied() == null &&
-                    character.getFather() == null &&
-                    character.getGender() == null &&
-                    character.getMother() == null &&
-                    character.getPlayedBy() == null &&
-                    character.getPovBooks() == null &&
-                    character.getSpouse() == null &&
-                    character.getTitles() == null);
+                @Override
+                public void onFailure(@NonNull Call<Character> call, @NonNull Throwable t) {
+                    Log.d("AdapterCharacters", "onFailure: " + t.getMessage());
+                }
+            });
         }
     }
 }
