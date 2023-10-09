@@ -23,7 +23,7 @@ public class CharactersActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_characters);
         ActionBar actionBar = super.getSupportActionBar();
-        if (actionBar != null) actionBar.setTitle("Books");
+        if (actionBar != null) actionBar.setTitle("Characters");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         adapter = new AdapterCharacters(this, characters);

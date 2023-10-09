@@ -5,4 +5,8 @@
 
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+    <style name="ButtonSpecificActivities" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:backgroundTint">@color/all_blue</item>
+    </style>
 </resources>

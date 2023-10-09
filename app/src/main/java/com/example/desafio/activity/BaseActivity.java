@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.desafio.R;
 
@@ -21,8 +22,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActionBar toolbar = getSupportActionBar();
         assert toolbar != null;
-        toolbar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.toolbar_gradient));
-        //toolbar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.toolbar_color));
+        //toolbar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.toolbar_gradient));
+        toolbar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.toolbar_color));
 
     }
 
@@ -33,18 +34,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         MenuItem mi_house = menu.findItem(R.id.action_bar_houses);
 
         if (currentActivity.equals("BOOKS_ACTIVITY")) {
-            mi_book.setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_book_light));
+            mi_book.setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_book_dark));
             mi_house.setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_house_light));
         } else if (currentActivity.equals("HOUSES_ACTIVITY")) {
-            mi_book.setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_book_dark));
+            mi_book.setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_book_light));
             mi_house.setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_house_dark));
         } else {
-            mi_book.setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_book_dark));
+            mi_book.setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_book_light));
             mi_house.setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_house_light));
         }
 
         return super.onCreateOptionsMenu(menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

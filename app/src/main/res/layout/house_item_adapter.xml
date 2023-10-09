@@ -19,7 +19,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@color/gray"
-            android:src="@drawable/ic_house_light" />
+            android:src="@drawable/ic_house_dark" />
 
     </androidx.cardview.widget.CardView>
 
@@ -28,8 +28,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:textSize="20sp"
         android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@id/cardView" />

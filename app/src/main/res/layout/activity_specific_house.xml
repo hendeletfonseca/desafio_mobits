@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray"
     tools:context=".activity.SpecificHouseActivity">
 
     <include layout="@layout/detail_content" />
@@ -12,29 +13,35 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_phrase"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
     <TextView
         android:id="@+id/tv_region"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_phrase" />
 
@@ -42,19 +49,25 @@
         android:id="@+id/tv_titles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_region" />
 
     <Button
         android:id="@+id/btn_overlord"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/overlord"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="25dp"
+        android:backgroundTint="@color/dark_gray"
+        android:text="@string/overlord"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_titles" />
@@ -63,7 +76,11 @@
         android:id="@+id/btn_heir"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:backgroundTint="@color/dark_gray"
         android:text="@string/heir"
+        android:textColor="@color/black"
+            android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_overlord" />
