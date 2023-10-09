@@ -3,6 +3,7 @@ package com.example.desafio.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import com.example.desafio.adapters.AdapterHouses;
 import com.example.desafio.entities.House;
 import com.example.desafio.network.ApiModule;
 import com.example.desafio.network.IceAndFireService;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +31,23 @@ public class HousesActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCurrentActivity("HOUSES_ACTIVITY");
         setContentView(R.layout.activity_houses);
         Objects.requireNonNull(super.getSupportActionBar()).setTitle("Houses");
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_houses);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bottom_books) {
+                super.openBooksActivity();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
+                return true;
+            }
+            if (item.getItemId() == R.id.bottom_houses) {
+                return true;
+            }
+            return false;
+        });
 
         recyclerView = findViewById(R.id.recyclerview);
         adapter = new AdapterHouses(this, houses);
@@ -39,9 +55,14 @@ public class HousesActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle == null) loadHouses(1, 50);
-        else houses = (ArrayList<House>) bundle.getSerializable("HOUSES");
+        if (savedInstanceState == null) {
+            loadHouses(1, 50);
+            Log.d("HousesActivity", "SAVED INSTANCE STATE IS NULL");
+        } else {
+            houses.addAll((ArrayList<House>) savedInstanceState.getSerializable("HOUSES"));
+            adapter.notifyItemRangeInserted(0, houses.size());
+            Log.d("HousesActivity", "SAVED INSTANCE STATE SIZE: " + houses.size());
+        }
 
     }
 
@@ -62,7 +83,8 @@ public class HousesActivity extends BaseActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<House>> call, @NonNull Throwable t) {
-                Log.d("HOUSES_ACTIVITY", "loadHouses ON FAILURE Throwable: " + t.getMessage());
+                TextView textView = findViewById(R.id.tv_houses_not_found);
+                textView.setVisibility(TextView.VISIBLE);
             }
         });
     }

@@ -3,6 +3,7 @@ package com.example.desafio.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -13,7 +14,9 @@ import com.example.desafio.adapters.AdapterBooks;
 import com.example.desafio.entities.Book;
 import com.example.desafio.network.ApiModule;
 import com.example.desafio.network.IceAndFireService;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,38 +26,61 @@ import retrofit2.Response;
 
 public class BooksActivity extends BaseActivity {
     private static final int TOTAL_BOOKS = 14;
-    private LinkedList<Book> books = new LinkedList<>();
+    private ArrayList<Book> books = new ArrayList<>();
     private AdapterBooks adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setCurrentActivity("BOOKS_ACTIVITY");
         setContentView(R.layout.activity_books);
         ActionBar actionBar = super.getSupportActionBar();
         if (actionBar != null) actionBar.setTitle("Books");
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_books);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bottom_books) {
+                //super.onClickBooks();
+                return true;
+            }
+            if (item.getItemId() == R.id.bottom_houses) {
+                super.openHousesActivity();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                finish();
+                return true;
+            }
+            return false;
+        });
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         adapter = new AdapterBooks(this, books);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle == null) loadBooks(1, TOTAL_BOOKS);
-        else books = (LinkedList<Book>) bundle.getSerializable("BOOKS");
-
+//        Bundle bundle = getIntent().getExtras();
+//        if (bundle == null) {
+//            loadBooks(1, TOTAL_BOOKS);
+//            Log.d("BooksActivity", "Bundle is null");
+//        }
+//        else {
+//            books = (LinkedList<Book>) bundle.getSerializable("BOOKS");
+//            Log.d("BooksActivity", "Bundle is not null");
+//        }
+        if (savedInstanceState == null) {
+            loadBooks(1, TOTAL_BOOKS);
+            Log.d("BooksActivity", "Bundle is null");
+        }
+        else {
+            books.addAll((ArrayList<Book>) savedInstanceState.getSerializable("BOOKS"));
+            adapter.notifyItemRangeInserted(0, books.size());
+            Log.d("BooksActivity", "Bundle is not null: " + books.size());
+        }
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putSerializable("BOOKS", books);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_bar_books) return false;
-        return super.onOptionsItemSelected(item);
+        super.onSaveInstanceState(outState);
     }
 
     public void loadBooks(int page, int pageSize) {
@@ -76,7 +102,8 @@ public class BooksActivity extends BaseActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<Book>> call, @NonNull Throwable t) {
-                Log.d("BooksActivity", "Error: " + t.getMessage());
+                TextView textView = findViewById(R.id.tv_books_not_found);
+                textView.setVisibility(TextView.VISIBLE);
             }
         });
     }

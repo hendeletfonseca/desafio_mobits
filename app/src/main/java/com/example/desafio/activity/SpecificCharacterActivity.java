@@ -13,7 +13,7 @@ import java.util.Objects;
 import com.example.desafio.entities.Character;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class SpecificCharacterActivity extends BaseActivity {
+public class SpecificCharacterActivity extends SpecificActivity {
     private Character character;
 
     @Override
@@ -25,6 +25,8 @@ public class SpecificCharacterActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) finish();
         this.character = (Character) bundle.getSerializable("CHARACTER");
+
+        setEndPoint(character.getName());
 
         TextView tv_name = findViewById(R.id.tv_character_name);
         tv_name.setText(character.getName());
@@ -46,17 +48,22 @@ public class SpecificCharacterActivity extends BaseActivity {
             tv_titles.setText(character.getStringTitles());
         }
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("url", "https://www.google.com/search?tbm=isch&q=" + character.getName());
-                Intent intent = new Intent(SpecificCharacterActivity.this, WebViewActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Bundle bundle = new Bundle();
+//                bundle.putString("url", "https://www.google.com/search?tbm=isch&q=" + character.getName());
+//                Intent intent = new Intent(SpecificCharacterActivity.this, WebViewActivity.class);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//            }
+//        });
 
+    }
+
+    @Override
+    public void setEndPoint(String endPoint) {
+        super.endPoint = endPoint;
     }
 }

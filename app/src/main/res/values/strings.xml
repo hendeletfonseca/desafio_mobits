@@ -17,4 +17,10 @@
     <string name="name_not_found">Nome desconhecido!</string>
     <string name="birth_not_found">Data de nascimento não encontrada</string>
     <string name="titles_not_found">Não possui títulos!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_search_button_label">Search</string>
+    <string name="characters_not_found">Não foram encontrados personagens</string>
+    <string name="books_not_found">Não foi possível carregar os livros, verifique a conexão e tente novamente!</string>
+    <string name="houses_not_found">Não foi possível carregar as Casas, verifique a conexão e tente novamente!</string>
 </resources>

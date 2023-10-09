@@ -23,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SpecificHouseActivity extends BaseActivity {
+public class SpecificHouseActivity extends SpecificActivity {
     private House house;
     private Toast toast;
 
@@ -32,21 +32,23 @@ public class SpecificHouseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_house);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("url", "https://www.google.com/search?tbm=isch&q=" + house.getName());
-                Intent intent = new Intent(SpecificHouseActivity.this, WebViewActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Bundle bundle = new Bundle();
+//                bundle.putString("url", "https://www.google.com/search?tbm=isch&q=" + house.getName());
+//                Intent intent = new Intent(SpecificHouseActivity.this, WebViewActivity.class);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//            }
+//        });
 
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) finish();
         house = (House) bundle.getSerializable("HOUSE");
+
+        setEndPoint(house.getName());
 
         TextView tv_name = findViewById(R.id.tv_name);
         tv_name.setText(house.getName());
@@ -82,6 +84,11 @@ public class SpecificHouseActivity extends BaseActivity {
                 openCharacterActivity(house.getOverlord());
             }
         });
+    }
+
+    @Override
+    public void setEndPoint(String endPoint) {
+        super.endPoint = endPoint;
     }
 
     private void openCharacterActivity(String character_url) {

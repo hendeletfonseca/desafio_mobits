@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class SpecificBookActivity extends BaseActivity {
+public class SpecificBookActivity extends SpecificActivity {
     private Book book;
     private JsonObject jsonObject;
 
@@ -36,6 +36,8 @@ public class SpecificBookActivity extends BaseActivity {
         if (bundle == null) finish();
         this.book = (Book) bundle.getSerializable("BOOK");
 
+        setEndPoint(book.getName());
+
         TextView tv_title = findViewById(R.id.tv_book_title);
         tv_title.setText(book.getName());
 
@@ -46,7 +48,8 @@ public class SpecificBookActivity extends BaseActivity {
         tv_pages.setText(getString(R.string.pages_placeholder, String.valueOf(book.getNumberOfPages())));
 
         TextView tv_release_date = findViewById(R.id.tv_book_release_date);
-        tv_release_date.setText(getString(R.string.release_date_placeholder, book.getReleased()));
+        String release = book.getReleased().substring(0, 10);
+        tv_release_date.setText(getString(R.string.release_date_placeholder, release));
 
         readJson();
 
@@ -65,17 +68,22 @@ public class SpecificBookActivity extends BaseActivity {
                 openCharacters(book.getCharacters());
             }
         });
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("url", "https://www.google.com/search?tbm=isch&q=" + book.getName());
-                Intent intent = new Intent(SpecificBookActivity.this, WebViewActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Bundle bundle = new Bundle();
+//                bundle.putString("url", "https://www.google.com/search?tbm=isch&q=" + book.getName());
+//                Intent intent = new Intent(SpecificBookActivity.this, WebViewActivity.class);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+//            }
+//        });
+    }
+
+    @Override
+    public void setEndPoint(String endPoint) {
+        super.endPoint = endPoint;
     }
 
     public final String verificarLinkNoJson(String link) {

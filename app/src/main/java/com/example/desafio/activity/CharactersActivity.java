@@ -2,6 +2,8 @@ package com.example.desafio.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,6 +55,7 @@ public class CharactersActivity extends BaseActivity {
 
     private void addTabsAfterAllCharactersAreAdded() {
         int size = characters.size();
+       updateCharactersTv(size);
         if (size == 0) return;
         for (int i = 1; i < size; i++) {
             String firstLetter = String.valueOf(characters.get(i).getName().charAt(0)).toUpperCase();
@@ -70,6 +73,12 @@ public class CharactersActivity extends BaseActivity {
             characters.addFirst(firstDiv);
             adapter.notifyItemInserted(0);
         }
+    }
+
+    private void updateCharactersTv(int listSize) {
+        TextView warning = findViewById(R.id.tv_characters_not_found);
+        if (listSize == 0) warning.setVisibility(View.VISIBLE);
+        else warning.setVisibility(View.INVISIBLE);
     }
 
     private boolean isARealCharacter(Character character) {

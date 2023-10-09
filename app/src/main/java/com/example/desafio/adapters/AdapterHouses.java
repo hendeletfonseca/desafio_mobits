@@ -35,8 +35,7 @@ public class AdapterHouses extends RecyclerView.Adapter<AdapterHouses.HouseViewH
     @Override
     public void onBindViewHolder(@NonNull AdapterHouses.HouseViewHolder holder, int position) {
         House mCurrent = housesList.get(position);
-        holder.houseItemView.setText(mCurrent.getName());
-        holder.houseItemView2.setText(mCurrent.getRegion());
+        holder.houseItemView.setText(mCurrent.getName() + "\n" + mCurrent.getWords());
     }
 
     @Override
@@ -46,12 +45,12 @@ public class AdapterHouses extends RecyclerView.Adapter<AdapterHouses.HouseViewH
 
     public class HouseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView houseItemView;
-        public final TextView houseItemView2;
+        //public final TextView houseItemView2;
         final AdapterHouses mAdapter;
         public HouseViewHolder(@NonNull View itemView, AdapterHouses adapter) {
             super(itemView);
             houseItemView = itemView.findViewById(R.id.adapter_tv_name);
-            houseItemView2 = itemView.findViewById(R.id.adapter_tv_phrase);
+            //houseItemView2 = itemView.findViewById(R.id.adapter_tv_phrase);
             this.mAdapter = adapter;
             itemView.setOnClickListener(this);
         }

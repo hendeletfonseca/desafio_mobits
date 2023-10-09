@@ -71,7 +71,8 @@ public class AdapterCharacters extends RecyclerView.Adapter<AdapterCharacters.Ch
             super(itemView);
             characterItemView = itemView.findViewById(R.id.adapter_tv_name);
             this.mAdapter = adapter;
-            if(type == TYPE_ITEM) itemView.setOnClickListener(this);
+            //if(type == TYPE_ITEM) itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override
