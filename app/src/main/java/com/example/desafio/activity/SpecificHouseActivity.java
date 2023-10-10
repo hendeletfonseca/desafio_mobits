@@ -3,7 +3,6 @@ package com.example.desafio.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,7 +16,6 @@ import com.example.desafio.entities.House;
 import com.example.desafio.network.ApiModule;
 import com.example.desafio.network.IceAndFireService;
 import com.example.desafio.util.UrlUtils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,11 +71,11 @@ public class SpecificHouseActivity extends SpecificActivity {
                 openCharacterActivity(house.getHeir());
             }
         });
-        Button btn_overlord = findViewById(R.id.btn_overlord);
-        btn_overlord.setOnClickListener(new View.OnClickListener() {
+        Button btn_currentLord = findViewById(R.id.btn_overlord);
+        btn_currentLord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (house.getOverlord().equals("")) {
+                if (house.getCurrentLord().equals("")) {
                     showToast("A casa " + house.getName() + " não possui Lorde!");
                     return;
                 }
@@ -109,7 +107,7 @@ public class SpecificHouseActivity extends SpecificActivity {
 
             @Override
             public void onFailure(@NonNull Call<Character> call, @NonNull Throwable t) {
-                Log.d("SPECIFIC_HOUSE", "onFailure: " + t.getMessage());
+                showToast("Erro ao carregar personagem!");
             }
         });
     }

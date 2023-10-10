@@ -57,15 +57,6 @@ public class BooksActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
 
-//        Bundle bundle = getIntent().getExtras();
-//        if (bundle == null) {
-//            loadBooks(1, TOTAL_BOOKS);
-//            Log.d("BooksActivity", "Bundle is null");
-//        }
-//        else {
-//            books = (LinkedList<Book>) bundle.getSerializable("BOOKS");
-//            Log.d("BooksActivity", "Bundle is not null");
-//        }
         if (savedInstanceState == null) {
             loadBooks(1, TOTAL_BOOKS);
             Log.d("BooksActivity", "Bundle is null");

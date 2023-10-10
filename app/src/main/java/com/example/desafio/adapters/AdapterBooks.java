@@ -14,11 +14,15 @@ import com.example.desafio.R;
 import com.example.desafio.activity.SpecificBookActivity;
 import com.example.desafio.entities.Book;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdapterBooks extends RecyclerView.Adapter<AdapterBooks.BookViewHolder> {
     private final List<Book> booksList;
     private final LayoutInflater mInflater;
+    private Map<Book, Boolean> booksMap = new HashMap<>();
+    private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
     public AdapterBooks(Context context, List<Book> booksList) {
         mInflater = LayoutInflater.from(context);
@@ -64,7 +68,5 @@ public class AdapterBooks extends RecyclerView.Adapter<AdapterBooks.BookViewHold
             intent.putExtra("BOOK", element);
             view.getContext().startActivity(intent);
         }
-
-
     }
 }

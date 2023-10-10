@@ -25,7 +25,6 @@ import retrofit2.Response;
 
 public class HousesActivity extends BaseActivity {
     ArrayList<House> houses = new ArrayList<>();
-    RecyclerView recyclerView;
     private AdapterHouses adapter;
 
     @Override
@@ -49,7 +48,7 @@ public class HousesActivity extends BaseActivity {
             return false;
         });
 
-        recyclerView = findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
         adapter = new AdapterHouses(this, houses);
 
         recyclerView.setAdapter(adapter);
