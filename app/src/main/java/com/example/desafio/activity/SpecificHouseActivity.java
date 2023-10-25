@@ -30,18 +30,6 @@ public class SpecificHouseActivity extends SpecificActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_house);
 
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("url", "https://www.google.com/search?tbm=isch&q=" + house.getName());
-//                Intent intent = new Intent(SpecificHouseActivity.this, WebViewActivity.class);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//            }
-//        });
-
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) finish();
         house = (House) bundle.getSerializable("HOUSE");
@@ -50,15 +38,19 @@ public class SpecificHouseActivity extends SpecificActivity {
 
         TextView tv_name = findViewById(R.id.tv_name);
         tv_name.setText(house.getName());
+        if (house.getName().isEmpty()) tv_name.setVisibility(View.GONE);
 
         TextView tv_phrase = findViewById(R.id.tv_phrase);
         tv_phrase.setText(house.getWordsString());
+        if (house.getWords().isEmpty()) tv_phrase.setVisibility(View.GONE);
 
         TextView tv_region = findViewById(R.id.tv_region);
         tv_region.setText(house.getRegion());
+        if (house.getRegion().isEmpty()) tv_region.setVisibility(View.GONE);
 
         TextView tv_titles = findViewById(R.id.tv_titles);
         tv_titles.setText(house.getTitlesString());
+        if (house.getTitlesString().equals("Sem títulos!")) tv_titles.setVisibility(View.GONE);
 
         Button btn_heir = findViewById(R.id.btn_heir);
         btn_heir.setOnClickListener(new View.OnClickListener() {

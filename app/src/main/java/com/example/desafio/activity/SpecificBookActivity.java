@@ -40,16 +40,22 @@ public class SpecificBookActivity extends SpecificActivity {
 
         TextView tv_title = findViewById(R.id.tv_book_title);
         tv_title.setText(book.getName());
+        if (book.getName().isEmpty()) tv_title.setVisibility(View.GONE);
 
         TextView tv_isbn = findViewById(R.id.tv_book_isbn);
         tv_isbn.setText(getString(R.string.isbn_placeholder, book.getIsbn()));
+        if (book.getIsbn().isEmpty()) tv_isbn.setVisibility(View.GONE);
 
         TextView tv_pages = findViewById(R.id.tv_book_pages);
         tv_pages.setText(getString(R.string.pages_placeholder, String.valueOf(book.getNumberOfPages())));
 
         TextView tv_release_date = findViewById(R.id.tv_book_release_date);
-        String release = book.getReleased().substring(0, 10);
-        tv_release_date.setText(getString(R.string.release_date_placeholder, release));
+        if (book.getReleased().isEmpty()) {
+            tv_release_date.setVisibility(View.GONE);
+        } else {
+            String release = book.getReleased().substring(0, 10);
+            tv_release_date.setText(getString(R.string.release_date_placeholder, release));
+        }
 
         readJson();
 
@@ -68,17 +74,6 @@ public class SpecificBookActivity extends SpecificActivity {
                 openCharacters(book.getCharacters());
             }
         });
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("url", "https://www.google.com/search?tbm=isch&q=" + book.getName());
-//                Intent intent = new Intent(SpecificBookActivity.this, WebViewActivity.class);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//            }
-//        });
     }
 
     @Override

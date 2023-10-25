@@ -42,6 +42,7 @@ public class House implements Serializable {
     public String getWords() {
         return words;
     }
+
     public String getWordsString() {
         if (words.equals("") || words.equals("null"))
             return "Sem frase!";
@@ -102,6 +103,7 @@ public class House implements Serializable {
     public List<String> getSwornMembers() {
         return swornMembers;
     }
+
     @NonNull
     @Override
     public String toString() {

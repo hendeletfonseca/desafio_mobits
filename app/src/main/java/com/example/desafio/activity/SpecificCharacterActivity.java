@@ -30,35 +30,25 @@ public class SpecificCharacterActivity extends SpecificActivity {
 
         TextView tv_name = findViewById(R.id.tv_character_name);
         tv_name.setText(character.getName());
+        if (character.getName().isEmpty()) tv_name.setVisibility(View.GONE);
 
         TextView tv_gender = findViewById(R.id.tv_character_gender);
         tv_gender.setText(character.getGender());
+        if (character.getGender().isEmpty()) tv_gender.setVisibility(View.GONE);
 
         TextView tv_birthday = findViewById(R.id.tv_character_birthday);
-        if (character.getBorn().equals("")) {
-            tv_birthday.setText(R.string.birth_not_found);
+        if (character.getBorn().equals("") || character.getBorn().isEmpty()) {
+            tv_birthday.setVisibility(View.GONE);
         } else {
             tv_birthday.setText(character.getBorn());
         }
 
         TextView tv_titles = findViewById(R.id.tv_character_titles);
-        if (character.getTitles().size() == 0) {
-            tv_titles.setText(R.string.titles_not_found);
+        if (character.getTitles().size() == 0 || character.getTitles().isEmpty()) {
+            tv_titles.setVisibility(View.GONE);
         } else {
             tv_titles.setText(character.getStringTitles());
         }
-
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("url", "https://www.google.com/search?tbm=isch&q=" + character.getName());
-//                Intent intent = new Intent(SpecificCharacterActivity.this, WebViewActivity.class);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
-//            }
-//        });
 
     }
 
