@@ -42,12 +42,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    implementation("io.reactivex.rxjava3:rxjava:3.1.8")
-    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
-
-    implementation("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
-    implementation("io.reactivex:rxandroid:1.2.1")
-    implementation("io.reactivex:rxjava:1.1.6")
+    implementation("com.android.volley:volley:1.2.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

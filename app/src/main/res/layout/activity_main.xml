@@ -7,30 +7,30 @@
     android:background="@color/gray"
     tools:context=".activity.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        tools:listitem="@layout/book_item_adapter"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="?actionBarSize"
-        android:clickable="true"
-        android:focusable="true">
-    </androidx.recyclerview.widget.RecyclerView>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:background="@drawable/bottom_background"
-        android:backgroundTint="@color/dark_gray"
+        android:backgroundTint="@color/gray"
         app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
         app:itemIconTint="@drawable/item_selector"
         app:itemRippleColor="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
         app:menu="@menu/bottom_menu" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

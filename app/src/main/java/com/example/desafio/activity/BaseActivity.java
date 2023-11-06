@@ -20,14 +20,4 @@ public abstract class BaseActivity extends AppCompatActivity {
         //toolbar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.toolbar_gradient));
         toolbar.setBackgroundDrawable(AppCompatResources.getDrawable(this, R.drawable.toolbar_color));
     }
-
-    public void openBooksActivity() {
-        Intent intent = new Intent(this, BooksActivity.class);
-        startActivity(intent);
-    }
-
-    public void openHousesActivity() {
-        Intent intent = new Intent(this, HousesActivity.class);
-        startActivity(intent);
-    }
 }

@@ -20,18 +20,13 @@
             android:exported="false" />
         <activity
             android:name=".activity.SpecificHouseActivity"
-            android:parentActivityName=".activity.HousesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.HousesActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SpecificCharacterActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SpecificBookActivity"
-            android:exported="false"
-            android:parentActivityName=".activity.BooksActivity" />
+            android:exported="false" />
         <activity
             android:name=".activity.BaseActivity"
             android:exported="false" />
@@ -39,12 +34,8 @@
             android:name=".activity.CharactersActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.BooksActivity"
-            android:exported="false">
-        </activity>
-        <activity
             android:name=".activity.MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
